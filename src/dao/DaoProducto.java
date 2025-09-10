@@ -1,8 +1,8 @@
 package dao;
 
 import entidad.Producto;
-
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DaoProducto {
 	private String host = "jdbc:mysql://localhost:3306/";
@@ -47,5 +47,49 @@ public class DaoProducto {
 		
 		return filas;
 		
+	}
+	
+	public int modificarProducto(Producto p) {
+		Connection cn = null;
+		int filas = 0;
+		try {
+			cn = DriverManager.getConnection(host+dbName,user,pass);
+			String query = "UPDATE productos SET Nombre = ?, Precio = ?, Stock = ?, IdCategoria = ? WHERE Codigo = ?";
+			PreparedStatement pst = cn.prepareStatement(query);
+			pst.setString(1, p.getNombre());
+			pst.setFloat(2, p.getPrecio());
+			pst.setInt(3, p.getStock());
+			pst.setInt(4, p.getIdCategoria());
+			pst.setString(5,p.getCodigo());
+			filas = pst.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return filas;
+	}
+	
+	public ArrayList<Producto> listarProductos(){
+		ArrayList<Producto> array = new ArrayList<Producto>();
+		Connection cn = null;
+		try {
+			cn = DriverManager.getConnection(host+dbName,user,pass);
+			String query = "SELECT * FROM productos";
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery(query);
+			while(rs.next()) {
+				Producto p = new Producto ();
+				p.setCodigo(rs.getString("Codigo"));
+				p.setNombre(rs.getString("Nombre"));
+				p.setPrecio(rs.getFloat("Precio"));
+				p.setStock(rs.getInt("Stock"));
+				p.setIdCategoria(rs.getInt("IdCategoria"));
+				array.add(p);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return array;
 	}
 }
