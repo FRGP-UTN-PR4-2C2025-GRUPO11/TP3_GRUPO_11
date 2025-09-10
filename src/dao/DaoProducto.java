@@ -29,4 +29,23 @@ public class DaoProducto {
 	
 		return filas;
 	}
+	
+	public int eliminarProducto(Producto p) {		
+		Connection cn = null;
+		int filas = 0;
+		
+		try {
+			cn = DriverManager.getConnection(host+dbName,user,pass);
+			String query = "DELETE FROM productos WHERE Codigo = ?";
+			PreparedStatement pst = cn.prepareStatement(query);
+			pst.setString(1, p.getCodigo());
+			filas = pst.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return filas;
+		
+	}
 }
