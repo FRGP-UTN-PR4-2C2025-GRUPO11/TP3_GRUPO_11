@@ -18,7 +18,7 @@ public class DaoCategoria {
 	}
 	
 	public int agregarCategoria(Categoria categoria) {
-		String query = "INSERT INTO categoria(idCategoria,Nombre) VALUES ('"+categoria.getIdCategoria()+"','"+categoria.getNombre()+"')";
+		String query = "INSERT INTO categorias(idCategoria,Nombre) VALUES ('"+categoria.getIdCategoria()+"','"+categoria.getNombre()+"')";
 		
 		Connection cn = null;
 		int filas = 0;
@@ -35,7 +35,7 @@ public class DaoCategoria {
 		return filas;
 	}
 	
-	public int eliminarCategoria(int idCategoria) {		
+	public int eliminarCategoria(Categoria categoria) {		
 		Connection cn = null;
 		int filas = 0;
 		
@@ -43,7 +43,7 @@ public class DaoCategoria {
 			cn = DriverManager.getConnection(host+dbName,user,pass);
 			String query = "DELETE FROM categoria WHERE idCategoria = ?";
 			PreparedStatement pst = cn.prepareStatement(query);
-			pst.setInt(1, idCategoria);
+			pst.setInt(1, categoria.getIdCategoria());
 			filas = pst.executeUpdate();
 		}
 		catch(Exception e) {
