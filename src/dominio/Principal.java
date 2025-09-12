@@ -56,16 +56,18 @@ public class Principal {
 		
 		DaoProducto dp = new DaoProducto();
 		
-		Producto p = new Producto("11", "Chauchas", 1200, 60, 1);
+		Producto pr = new Producto("11", "Chauchas", 1200, 60, 1);
 
-		if (dp.eliminarProducto(p) == 1)
+		/*if (dp.eliminarProducto(p) == 1)
 		{
 			System.out.println("Producto eliminado con éxito\n" + p );
 		}
 		else
 		{
 			System.out.println("Producto no pudo ser eliminado\n" + p);
-		}
+		}*/
+
+		dp.sp_AgregarProducto(pr);
 				
 	}
 
