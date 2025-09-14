@@ -19,6 +19,27 @@ public class DaoCategoria {
 
 	}
 
+	public Categoria buscarCategoria(int idCategoria) {
+		Categoria categoria = null;
+		String query = "SELECT * FROM categorias WHERE idCategoria = ?";
+		Connection cn = null;
+		try {
+			cn = DriverManager.getConnection(host + dbName, user, pass);
+			PreparedStatement pst = cn.prepareStatement(query);
+			pst.setInt(1, idCategoria);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				categoria = new Categoria();
+				categoria.setIdCategoria(rs.getInt("idCategoria"));
+				categoria.setNombre(rs.getString("Nombre"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return categoria;
+	}
+
 	public int agregarCategoria(Categoria categoria) {
 		String query = "INSERT INTO categorias(idCategoria,Nombre) VALUES ('"
 		    + categoria.getIdCategoria() + "','" + categoria.getNombre() + "')";
@@ -43,7 +64,7 @@ public class DaoCategoria {
 
 		try {
 			cn = DriverManager.getConnection(host + dbName, user, pass);
-			String query = "DELETE FROM categoria WHERE idCategoria = ?";
+			String query = "DELETE FROM categorias WHERE idCategoria = ?";
 			PreparedStatement pst = cn.prepareStatement(query);
 			pst.setInt(1, categoria.getIdCategoria());
 			filas = pst.executeUpdate();
@@ -59,35 +80,34 @@ public class DaoCategoria {
 		int filas = 0;
 
 		try {
-			cn = DriverManager.getConnection(host+dbName,user,pass);
+			cn = DriverManager.getConnection(host + dbName, user, pass);
 			String query = "UPDATE categorias SET Nombre = ? WHERE idCategoria = ?";
 			PreparedStatement pst = cn.prepareStatement(query);
 			pst.setString(1, categoria.getNombre());
 			pst.setInt(2, categoria.getIdCategoria());
 			filas = pst.executeUpdate();
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return filas;
 	}
 
-	public ArrayList<Categoria> listarCategorias(){
+	public ArrayList<Categoria> listarCategorias() {
 		ArrayList<Categoria> lista = new ArrayList<Categoria>();
 		Connection cn = null;
 		try {
-			cn = DriverManager.getConnection(host+dbName,user,pass);
+			cn = DriverManager.getConnection(host + dbName, user, pass);
 			String query = "SELECT * FROM categorias";
 			Statement st = cn.createStatement();
 			ResultSet rs = st.executeQuery(query);
 
-			while(rs.next()) {
+			while (rs.next()) {
 				Categoria c = new Categoria();
 				c.setIdCategoria(rs.getInt("idCategoria"));
 				c.setNombre(rs.getString("Nombre"));
 				lista.add(c);
 			}
-		}	catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
